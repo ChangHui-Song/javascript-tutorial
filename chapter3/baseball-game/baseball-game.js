@@ -29,9 +29,11 @@ const checkInput = (input) => {
   }
   return true;
 };
-
+let out = 0;
 $form.addEventListener('submit', (event) => {
   const value = $input.value;
+  let strike = 0;
+  let ball = 0;
   event.preventDefault();
   $input.value = '';
   console.log(answer);
@@ -40,5 +42,36 @@ $form.addEventListener('submit', (event) => {
   }
   if (answer.join('') === value) {
     $logs.textContent = '홈런!';
+    return ;
   }
+  if (tries.length >= 9) {
+    const message = document.createTextNode(`패배! 정답은 ${answer.join('')}`);
+    $logs.appendChild(message);
+    return ;
+  }
+
+  for (let i = 0; i < answer.length; i++) {
+    const index = value.indexOf(answer[i]);
+    if (index > -1) {
+      if (index === i) {
+        strike += 1;
+        continue ;
+      }
+      ball += 1;
+    }
+  }
+  let message2 = '';
+  if (strike === 0 && ball === 0) {
+    out++;
+    message2 = `${value}: OUT!`;
+  } else {
+    message2 = `${value}: ${strike}s ${ball}b`;
+  }
+  if (out === 3) {
+    const message = document.createTextNode(`패배! 정답은 ${answer.join('')}`);
+    $logs.appendChild(message);
+    return ;
+  }
+  $logs.append(message2, document.createElement('br'));
+  tries.push(value);
 });
