@@ -1,5 +1,7 @@
 const $result = document.querySelector('#result');
 const $bonus = document.querySelector('#bonus');
+const $form = document.querySelector('#form');
+const $inputList = document.querySelectorAll('#form input');
 const candidate = Array(45).fill().map((v, i) => i + 1);
 const shuffle = [];
 
@@ -37,15 +39,18 @@ const showBall = (number, $target) => {
   $target.appendChild($ball);
 }
 
-for (let i = 0; i <= winBalls.length; i++) {
-  let number;
-  let $target;
-  if (i === 6) {
-    number = bonus;
-    $target = $bonus;
-  } else {
-    number = winBalls[i];
-    $target = $result;
+$form.addEventListener('submit', (event) => {
+  event.preventDefault();
+  for (let i = 0; i <= winBalls.length; i++) {
+    let number;
+    let $target;
+    if (i === 6) {
+      number = bonus;
+      $target = $bonus;
+    } else {
+      number = winBalls[i];
+      $target = $result;
+    }
+    setTimeout(() => showBall(number, $target), 1000 * (i + 1));
   }
-  setTimeout(() => showBall(number, $target), 1000 * (i + 1));  
-}
+});
