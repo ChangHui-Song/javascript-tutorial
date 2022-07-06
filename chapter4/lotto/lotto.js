@@ -1,7 +1,5 @@
 const $result = document.querySelector('#result');
 const $bonus = document.querySelector('#bonus');
-const $form = document.querySelector('#form');
-const $inputList = document.querySelectorAll('#form input');
 const candidate = Array(45).fill().map((v, i) => i + 1);
 const shuffle = [];
 
@@ -31,7 +29,7 @@ const colorize = (number, $ball) => {
   }
 }
 
-const showBall = (number, $target) => {
+const drawBall = (number, $target) => {
   const $ball = document.createElement('div');
   $ball.className = 'ball';
   $ball.textContent = number;
@@ -39,8 +37,7 @@ const showBall = (number, $target) => {
   $target.appendChild($ball);
 }
 
-$form.addEventListener('submit', (event) => {
-  event.preventDefault();
+const showBall = () => {
   for (let i = 0; i <= winBalls.length; i++) {
     let number;
     let $target;
@@ -51,6 +48,17 @@ $form.addEventListener('submit', (event) => {
       number = winBalls[i];
       $target = $result;
     }
-    setTimeout(() => showBall(number, $target), 1000 * (i + 1));
+    setTimeout(() => drawBall(number, $target), 1000 * (i + 1));
   }
-});
+}
+
+const deleteBall = () => {
+  const $ballNodeList = document.querySelectorAll('.ball');
+  const $ballArrayList = Array.prototype.slice.call($ballNodeList);
+  while ($ballArrayList.length) {
+    $ballArrayList.pop().remove();
+  }
+}
+
+deleteBall();
+showBall();
