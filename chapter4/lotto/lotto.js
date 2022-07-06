@@ -12,7 +12,7 @@ while (candidate.length > 0) {
 }
 const winBalls = shuffle.slice(0, 6).sort((a, b) => a - b);
 const bonus = shuffle[winBalls.length];
-console.log(winBalls, bonus);
+
 const colorize = (number, $ball) => {
   if (!(number > 10 && number < 30)) {
     $ball.style.color = 'white';
