@@ -1,3 +1,4 @@
+const $form = document.querySelector('#form');
 const $result = document.querySelector('#result');
 const $bonus = document.querySelector('#bonus');
 const candidate = Array(45).fill().map((v, i) => i + 1);
@@ -10,8 +11,8 @@ while (candidate.length > 0) {
   shuffle.push(value);
 }
 const winBalls = shuffle.slice(0, 6).sort((a, b) => a - b);
-const bonus = shuffle[6];
-
+const bonus = shuffle[winBalls.length];
+console.log(winBalls, bonus);
 const colorize = (number, $ball) => {
   if (!(number > 10 && number < 30)) {
     $ball.style.color = 'white';
@@ -52,13 +53,64 @@ const showBall = () => {
   }
 }
 
-const deleteBall = () => {
-  const $ballNodeList = document.querySelectorAll('.ball');
-  const $ballArrayList = Array.prototype.slice.call($ballNodeList);
-  while ($ballArrayList.length) {
-    $ballArrayList.pop().remove();
+const checkInputValue = (inputArray) => {
+  let value;
+
+  if (inputArray.length !== new Set(inputArray).size) {
+    return false;
+  }
+
+  for (let i = 0; i < inputArray.length; i++) {
+    value = inputArray[i];
+    if (!(value && (value >= 1 && value <= 45 ))) {
+      return false;
+    }
+  }
+  return true;
+};
+
+const compareLottoNumber = (inputArray) => {
+  let count = 0;
+  let bonusCheck = 0;
+
+  for (let i = 0; i < inputArray.length; i++) {
+    if (inputArray.includes(winBalls[i])) {
+      count++;
+    }
+  }
+  if (inputArray.includes(bonus)) {
+    bonusCheck++;
+  }
+  return [count, bonusCheck];
+};
+
+const showResult = (count) => {
+  if (count[0] < 3) {
+    alert('당첨되지 못했습니다.');
+  } else if (count[0] === 3) {
+    alert('축하합니다. 5등에 당첨되셨습니다.');
+  } else if (count[0] === 4) {
+    alert('축하합니다. 4등에 당첨되셨습니다.');
+  } else if (count[0] === 4) {
+    alert('축하합니다. 3등에 당첨되셨습니다.');
+  } else if (count[0] === 5 && count[1]) {
+    alert('축하합니다. 2등에 당첨되셨습니다.');
+  } else {
+    alert('축하합니다. 1등에 당첨되셨습니다.');
   }
 }
 
-deleteBall();
-showBall();
+$form.addEventListener('submit', (event) => {
+  event.preventDefault();
+  const $inputNodeList = document.querySelectorAll('form input');
+  let inputArray = Array.prototype.slice.call($inputNodeList);
+  inputArray = inputArray.map((v, i) => parseInt(v.value));
+
+  if (!checkInputValue(inputArray)) {
+    alert("1 ~ 45의 숫자를 중복되지 않게 입력해주세요.");
+    return ;
+  }
+  const collectCount = compareLottoNumber(inputArray);
+  showBall();
+  setTimeout(() => showResult(collectCount), 7500);
+});
