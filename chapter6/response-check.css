@@ -1,0 +1,19 @@
+#screen {
+  height: 300px;
+  width: 400px;
+  text-align: center;
+  user-select: none;
+}
+
+#screen.waiting {
+  background-color: aqua;
+}
+
+#screen.ready {
+  background-color: red;
+  color: white;
+}
+
+#screen.now {
+  background-color: yellowgreen;
+}
