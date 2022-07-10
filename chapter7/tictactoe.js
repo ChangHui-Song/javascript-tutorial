@@ -45,6 +45,19 @@ const checkWinner = (target) => {
   return hasWinner;
 }
 
+const checkWinnerAndDraw = (target) => {
+  const hasWinner = checkWinner(randomCell);
+  if (hasWinner) {
+    $result.textContent = `${turn}님의 승리!`;
+  }
+  const draw = board.flat().every(cell => cell.textContent);
+  if (draw) {
+    $result.textContent = '무승부';
+    return ;
+  }
+  turn = turn === 'X' ? 'O' : 'X';
+}
+
 const callback = (event) => {
   if ($result.textContent) {
     return ;
@@ -66,6 +79,21 @@ const callback = (event) => {
     turn = 'X';
   } else if (turn === 'X') {
     turn = 'O';
+  }
+  if (turn === 'X') {
+    const emptyCells = board.flat().filter(v => !v.textContent);
+    const randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+    randomCell.textContent = 'X';
+    const hasWinner = checkWinner(randomCell);
+    if (hasWinner) {
+      $result.textContent = `${turn}님의 승리!`;
+    }
+    const draw = board.flat().every(cell => cell.textContent);
+    if (draw) {
+      $result.textContent = '무승부';
+      return ;
+    }
+    turn = turn === 'X' ? 'O' : 'X';
   }
 };
 
