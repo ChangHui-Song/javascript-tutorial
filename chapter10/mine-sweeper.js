@@ -17,16 +17,42 @@ let cell;
 let mine;
 let interval;
 let openCount = 0;
-let firstClick = false;
+let firstClick = true;
+let normalCellFound = false;
+let searched = [];
 
 // 첫 번째 클릭시 지뢰면 바꾸는 함수
-function trasferMine(rI, cI) {
-
+function transferMine(rI, cI) {
+  if (normalCellFound) return ;
+  if (rI < 0 || rI >= row || cI < 0 || cI >= cell) return ;
+  if (searched[rI][cI]) return ;
+  if (data[rI][cI] === CODE.NORMAL) {
+    data[rI][cI] = CODE.MINE;
+    normalCellFound = true;
+  }
+  if (data[rI][cI] === CODE.MINE) {
+    searched[rI][cI] = true;
+    transferMine(rI - 1, cI - 1);
+    transferMine(rI - 1, cI);
+    transferMine(rI - 1, cI + 1);
+    transferMine(rI, cI - 1);
+    transferMine(rI, cI + 1);
+    transferMine(rI + 1, cI - 1);
+    transferMine(rI + 1, cI);
+    transferMine(rI + 1, cI + 1);
+  }
 }
 
 // 지뢰 밟았을 때 나머지 지뢰 표시 함수
-function showMine(rI, cI) {
-
+function showMines() {
+  const mines = [CODE.MINE, CODE.FLAG_MINE, CODE.QUESTION_MINE];
+  data.forEach((row, rI) => {
+    row.forEach((cell, cI) => {
+      if (mines.includes(cell)) {
+        $tbody.children[rI].children[cI].textContent = 'X';
+      }
+    });
+  });
 }
 
 function plantMine() {
@@ -143,10 +169,20 @@ function onLeftClick(event) {
   const { target } = event;
   const rowIndex = target.parentNode.rowIndex;
   const cellIndex = target.cellIndex;
-  const cellData = data[rowIndex][cellIndex];
+  let cellData = data[rowIndex][cellIndex];
+  if (firstClick) {
+    firstClick = false;
+    searched = Array(row).fill().map(() => []);
+    if (cellData === CODE.MINE) {
+      transferMine(rowIndex, cellIndex);
+      data[rowIndex][cellIndex] = CODE.NORMAL;
+      cellData = CODE.NORMAL;
+    }
+  }
   if (cellData === CODE.NORMAL) {
     openAround(rowIndex, cellIndex);
   } else if (cellData === CODE.MINE) {
+    showMines();
     target.textContent = '펑';
     target.className = 'opened';
     $tbody.removeEventListener('contextmenu', onRightClick);
@@ -181,6 +217,8 @@ function onSubmit(event) {
   clearInterval(interval);
   $tbody.innerHTML = '';
   $timer.textContent = '0초';
+  firstClick = true;
+  normalCellFound = false;
   drawTable();
   const startTime = new Date();
   interval = setInterval(() => {
