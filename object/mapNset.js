@@ -63,9 +63,9 @@ let forEachSet = new Set(['orange', 'apple', 'banana']);
 //   console.log(value);
 // }
 
-forEachSet.forEach((value, valueAgain, set) => {
-  console.log(value, valueAgain);
-});
+// forEachSet.forEach((value, valueAgain, set) => {
+//   console.log(value, valueAgain);
+// });
 
 
 // problem 1 배열 중복 제거
@@ -74,7 +74,7 @@ function unique(arr) {
 }
 
 let values = ['hare', 'krishna', 'hare', 'krishna', 'krishna', ':-O'];
-console.log(unique(values));
+// console.log(unique(values));
 
 
 // problem 2 anagram 걸러내기
@@ -88,9 +88,17 @@ function aclean(arr) {
       .join('');
     map.set(sorted, value);
   }
-  console.log(map);
   return Array.from(map.values());
 }
 
 let arr = ['nap', 'teachers', 'cheaters', 'PAN', 'ear', 'era', 'hectares'];
-console.log(aclean(arr));
+// console.log(aclean(arr));
+
+// problem 3 반복 가능 객체의 키
+let problemap = new Map();
+
+problemap.set('name', 'John');
+
+let problemKeys = Array.from(problemap.keys());
+problemKeys.push('more');
+console.log(problemKeys);
