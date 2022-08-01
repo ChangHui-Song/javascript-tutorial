@@ -1,5 +1,7 @@
-# Let's Get It JavaScript
+# JavaScript Tutorial
 
 ---
 
-# Modern JavaScript Tutorial
+### Let's Get It JavaScript
+
+### Modern JavaScript Tutorial
