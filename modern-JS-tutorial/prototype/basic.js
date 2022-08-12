@@ -1,6 +1,6 @@
 'use strict';
 
-let animal = {
+let animal1 = {
   eats: true,
   walk() {
     console.log('걷는다.');
@@ -11,7 +11,7 @@ let rabbit = {
   jumps: true,
 };
 
-rabbit.__proto__ = animal;
+rabbit.__proto__ = animal1;
 
 rabbit.walk = function () {
   console.log('깡총깡총');
@@ -34,7 +34,7 @@ let admin = {
   isAdmin: true,
 };
 
-let animal = {
+let animal2 = {
   walk() {
     if (!this.isSleeping) {
       console.log('걷는다.');
@@ -47,17 +47,18 @@ let animal = {
 
 let rabbit = {
   name: 'rabbit',
-  __proto__: animal,
+  __proto__: animal2,
 };
 
 rabbit.sleep();
-let animal = {
+
+let animal3 = {
   eats: true,
 };
 
 let rabbit = {
   jumps: true,
-  __proto__: animal,
+  __proto__: animal3,
 };
 
 console.log(Object.keys(rabbit));
@@ -74,19 +75,19 @@ for (let prop in rabbit) {
 }
 
 // what is show?
-let animal = {
+let animal4 = {
   jumps: null,
 };
 
 let rabbit = {
-  __proto__: animal,
+  __proto__: animal4,
   jumps: true,
 };
 
 console.log(rabbit.jumps);
 delete rabbit.jumps;
 console.log(rabbit.jumps);
-delete animal.jumps;
+delete animal4.jumps;
 console.log(rabbit.jumps);
 
 // search algorithm
